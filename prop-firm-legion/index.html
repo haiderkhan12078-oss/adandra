@@ -3,525 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prop Firm Legion — Risk & Payout Assistant</title>
-<meta name="description" content="Interactive concept for prop firm traders to monitor drawdown, profit targets, consistency, payout readiness and what-if risk scenarios.">
+<title>Prop Firm Legion — Trader Risk Assistant</title>
+<meta name="description" content="Dark fintech concept for prop firm traders to track drawdown, challenge progress, payout readiness and simulate planned risk.">
 <style>
 :root{
-  --bg:#0B0E14;
-  --bg2:#121418;
-  --card:#1E222D;
-  --card2:#171B24;
-  --border:#2A3140;
-  --text:#D1D4DC;
-  --muted:#8B93A7;
-  --blue:#2962FF;
-  --blue2:#3E73FF;
-  --green:#089981;
-  --red:#F23645;
-  --amber:#E7A93D;
+  --bg:#0B0E14;--bg2:#121418;--card:#1E222D;--card2:#181C25;--border:#2B3140;
+  --text:#D1D4DC;--muted:#8A91A3;--blue:#2962FF;--blue-soft:#182755;
+  --green:#089981;--green-soft:#0E2D29;--red:#F23645;--red-soft:#32181C;--amber:#D99A2B;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  margin:0;
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 85% 4%,rgba(41,98,255,.16),transparent 28%),
-    radial-gradient(circle at 5% 85%,rgba(8,153,129,.08),transparent 26%),
-    linear-gradient(180deg,var(--bg),var(--bg2));
-  min-height:100vh;
-}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
 button,input{font:inherit}
 button{cursor:pointer}
-.app{max-width:1220px;margin:0 auto;padding:28px 20px 54px}
-.header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px}
-.brand{display:flex;align-items:center;gap:13px}
-.logo{
-  width:46px;height:46px;border-radius:13px;
-  display:grid;place-items:center;
-  color:#fff;font-weight:900;letter-spacing:-.04em;
-  background:linear-gradient(145deg,#2f69ff,#1b46c7);
-  box-shadow:0 10px 28px rgba(41,98,255,.24);
-}
-.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6f7a90;margin-bottom:4px}
-.brandTitle{font-size:21px;font-weight:760;letter-spacing:-.02em;color:#f5f7fb}
-.brandSub{font-size:13px;color:var(--muted);margin-top:2px}
-.pill{font-size:12px;color:#aeb7c8;background:#121823;border:1px solid var(--border);padding:8px 11px;border-radius:999px}
-.shell{
-  border:1px solid var(--border);
-  background:rgba(13,16,22,.88);
-  border-radius:22px;
-  overflow:hidden;
-  box-shadow:0 30px 90px rgba(0,0,0,.34);
-}
-.nav{
-  display:flex;gap:8px;flex-wrap:wrap;
-  padding:14px 16px;
-  border-bottom:1px solid var(--border);
-  background:#0E1118;
-}
-.nav button{
-  border:1px solid transparent;
-  background:transparent;
-  color:#8E97AA;
-  padding:10px 14px;
-  border-radius:10px;
-  font-size:13px;
-}
-.nav button.active{
-  color:#fff;
-  background:#17234B;
-  border-color:#294BBA;
-  box-shadow:inset 0 0 0 1px rgba(41,98,255,.08);
-}
-.panel{display:none;padding:20px}
-.panel.active{display:block}
-.grid{display:grid;gap:14px}
-.heroGrid{grid-template-columns:1.15fr 1fr}
-.card{
-  background:linear-gradient(180deg,var(--card),var(--card2));
-  border:1px solid var(--border);
-  border-radius:17px;
-  padding:18px;
-}
-.card.soft{background:#151A23}
-.kicker{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.h1{font-size:28px;font-weight:820;color:#f5f7fb;letter-spacing:-.03em;line-height:1.1}
-.h2{font-size:18px;font-weight:730;color:#f1f4f8}
-.label{font-size:12px;color:var(--muted)}
-.big{font-size:30px;font-weight:820;color:#fff;letter-spacing:-.03em}
-.value{font-size:24px;font-weight:780;color:#f7f9fc}
-.small{font-size:12px}
-.muted{color:var(--muted)}
-.blue{color:#72a0ff}.green{color:#38c6ad}.red{color:#ff7380}.amber{color:#f4c15b}
-.progress{height:7px;border-radius:999px;overflow:hidden;background:#28303C}
-.progress > span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--blue),#6F94FF)}
-.heroStatus{
-  display:flex;align-items:center;justify-content:space-between;gap:14px;
-  padding:15px;border:1px solid #245744;border-radius:14px;background:#10221F;
-}
-.heroStatus.caution{border-color:#6d5526;background:#261f11}
-.heroStatus.danger{border-color:#73303a;background:#29161b}
-.statusDot{width:10px;height:10px;border-radius:99px;background:var(--green);box-shadow:0 0 0 5px rgba(8,153,129,.1)}
-.heroStatus.caution .statusDot{background:var(--amber);box-shadow:0 0 0 5px rgba(231,169,61,.1)}
-.heroStatus.danger .statusDot{background:var(--red);box-shadow:0 0 0 5px rgba(242,54,69,.1)}
-.statusTitle{font-size:16px;font-weight:760;color:#f3f7fa}
-.statusDesc{font-size:12px;color:#9aa4b6;margin-top:3px;line-height:1.45}
-.stats{grid-template-columns:repeat(4,1fr);margin-top:14px}
-.metric{min-height:120px}
-.metric .value{margin-top:14px}
-.metric .small{margin-top:8px}
-.two{grid-template-columns:1fr 1fr}
-.three{grid-template-columns:repeat(3,1fr)}
-.formgrid{grid-template-columns:.8fr 1.2fr}
-.field{display:grid;gap:7px;margin-bottom:12px}
-.field span{font-size:12px;color:#9ca5b7}
-.field input{
-  width:100%;padding:12px 13px;
-  background:#111620;color:#f3f5f8;
-  border:1px solid #303847;
-  border-radius:11px;outline:none;
-}
-.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(41,98,255,.12)}
-.btn{
-  border:1px solid #3568f0;
-  background:linear-gradient(180deg,#2F69FF,#2457E0);
-  color:#fff;font-weight:720;
-  padding:12px 15px;border-radius:11px;
-  min-height:44px;
-}
-.btn:hover{background:linear-gradient(180deg,#3A73FF,#2B60E8)}
-.btn.secondary{background:#161d2a;border-color:#303d57;color:#c7cfdd}
-.list{display:grid;gap:10px;margin-top:14px}
-.item{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  border:1px solid var(--border);background:#151A22;border-radius:12px;padding:12px 13px
-}
-.item b{font-size:13px;color:#eef2f7}
-.chip{font-size:11px;padding:5px 8px;border-radius:999px;border:1px solid var(--border)}
-.chip.ok{color:#60d6bf;background:#0f2824;border-color:#245848}
-.chip.warn{color:#efc46d;background:#2d2516;border-color:#6d5727}
-.chip.bad{color:#ff7d88;background:#2c171d;border-color:#73303a}
-.note{font-size:12px;color:#8f99aa;line-height:1.55}
-.callout{
-  border:1px solid #2E426D;
-  background:linear-gradient(180deg,#14203A,#121A2D);
-  border-radius:14px;padding:15px;
-}
-.whatif{
-  border:1px solid #2d3b55;
-  background:linear-gradient(180deg,#171e2a,#131922);
-  border-radius:17px;padding:18px
-}
-.resultBox{
-  margin-top:14px;border-radius:14px;padding:15px;
-  border:1px solid #265747;background:#10221F;
-}
-.resultBox.caution{border-color:#6f5727;background:#261f12}
-.resultBox.danger{border-color:#71313a;background:#28171b}
-.resultHeadline{font-size:17px;font-weight:780;color:#fff}
-.resultGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-.mini{background:#121722;border:1px solid #28313f;border-radius:11px;padding:11px}
-.mini .label{font-size:11px}.mini b{display:block;margin-top:5px;font-size:16px;color:#fff}
-.compareGrid{grid-template-columns:repeat(3,1fr)}
-.firm{transition:.18s ease}
-.firm:hover{transform:translateY(-2px);border-color:#3B4B63}
-.firm dl{margin:16px 0 0;display:grid;gap:11px}
-.firm dl div{display:flex;justify-content:space-between;gap:12px;font-size:13px}
-.firm dt{color:var(--muted)}.firm dd{margin:0;color:#eef2f7}
-.footer{margin-top:16px;text-align:center;color:#697386;font-size:11px}
-hr.sep{border:none;border-top:1px solid var(--border);margin:16px 0}
-@media(max-width:960px){.heroGrid,.formgrid,.two,.compareGrid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.app{padding:16px 10px 36px}.header{align-items:flex-start;flex-direction:column}.stats,.three,.resultGrid{grid-template-columns:1fr}.panel{padding:12px}.card{padding:15px}.h1{font-size:24px}.big{font-size:27px}.nav{padding:10px}.nav button{padding:9px 11px}}
+.layout{min-height:100vh;display:grid;grid-template-columns:232px 1fr}
+.sidebar{background:#0E1117;border-right:1px solid #242A36;padding:24px 16px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:11px;padding:0 8px 22px;border-bottom:1px solid #242A36}
+.logo{width:42px;height:42px;border-radius:11px;background:var(--blue);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 10px 24px rgba(41,98,255,.22)}
+.brandName{font-size:16px;font-weight:800;color:#fff}.brandSub{font-size:11px;color:var(--muted);margin-top:2px}
+.sideLabel{font-size:10px;letter-spacing:.14em;color:#626A79;text-transform:uppercase;margin:22px 10px 9px}
+.sideNav{display:grid;gap:6px}
+.sideNav button{width:100%;text-align:left;border:1px solid transparent;background:transparent;color:#929AAC;border-radius:10px;padding:11px 12px}
+.sideNav button.active{background:#182755;color:#fff;border-color:#294AA5}
+.sideNav button:hover{color:#fff;background:#151A23}
+.sideNote{position:absolute;left:16px;right:16px;bottom:20px;padding:13px;border:1px solid #2B3140;background:#151922;border-radius:12px;font-size:11px;color:#838C9E;line-height:1.45}
+.main{min-width:0}
+.topbar{height:72px;border-bottom:1px solid #242A36;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:#0C0F15;position:sticky;top:0;z-index:5}
+.pageTitle{font-size:18px;font-weight:800;color:#F5F7FA}.pageSub{font-size:12px;color:var(--muted);margin-top:2px}
+.demoPill{font-size:11px;border:1px solid #303747;background:#161A22;color:#9DA5B5;border-radius:999px;padding:7px 10px}
+.content{padding:26px;max-width:1320px;margin:0 auto}
+.command{display:grid;grid-template-columns:1.3fr .7fr;gap:16px}
+.hero{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px}
+.kicker{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#727B8E}
+.hero h1{font-size:30px;line-height:1.08;margin:8px 0 8px;color:#fff;letter-spacing:-.03em}
+.hero p{margin:0;color:#939BAD;font-size:13px;line-height:1.55;max-width:700px}
+.status{margin-top:20px;display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid #176A5A;background:var(--green-soft);border-radius:12px;padding:15px}
+.status.caution{border-color:#735B24;background:#2B2416}.status.danger{border-color:#7A2C35;background:var(--red-soft)}
+.statusLeft{display:flex;gap:11px;align-items:center}.dot{width:11px;height:11px;border-radius:99px;background:var(--green);box-shadow:0 0 0 5px rgba(8,153,129,.13)}
+.status.caution .dot{background:var(--amber);box-shadow:0 0 0 5px rgba(217,154,43,.12)}
+.status.danger .dot{background:var(--red);box-shadow:0 0 0 5px rgba(242,54,69,.12)}
+.status strong{display:block;color:#fff;font-size:15px}.status span{display:block;color:#9DA5B5;font-size:11px;margin-top:2px}
+.score{font-size:11px;border:1px solid currentColor;border-radius:999px;padding:6px 9px;color:#34C9AE}
+.status.caution .score{color:#E6B65A}.status.danger .score{color:#FF7A86}
+.actionCard{background:#141821;border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;justify-content:space-between}
+.actionCard h2{margin:0;font-size:18px;color:#fff}.actionCard p{font-size:12px;color:#8E97A9;line-height:1.5}
+.btn{border:1px solid #3C6EFF;background:var(--blue);color:white;border-radius:10px;padding:12px 14px;font-weight:750}
+.btn:hover{background:#3A6EFF}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px}
+.metricName{font-size:11px;color:#7F8798;text-transform:uppercase;letter-spacing:.08em}
+.metricVal{font-size:25px;font-weight:820;color:#fff;margin-top:13px;letter-spacing:-.02em}
+.metricFoot{font-size:11px;color:#8F97A8;margin-top:7px}
+.green{color:#2FC5A8}.red{color:#FF6B77}.blue{color:#6F94FF}.amber{color:#EAB75A}
+.progress{height:6px;background:#2A303B;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;background:var(--blue);border-radius:inherit}
+.sectionGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.panelCard{background:#151922;border:1px solid var(--border);border-radius:14px;padding:18px}
+.panelHead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.panelHead h3{margin:0;font-size:16px;color:#fff}.panelHead p{font-size:11px;color:#7F8899;margin:4px 0 0}
+.ruleRows{display:grid;gap:10px;margin-top:15px}.ruleRow{display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid #2B3140;background:#1B1F28;border-radius:10px}.ruleRow b{font-size:13px;color:#E9ECF1}.ruleRow span{font-size:12px}
+.chip{font-size:10px;padding:5px 7px;border-radius:999px;border:1px solid #3A4353}.chip.ok{color:#4CD0B7;border-color:#176A5A;background:#0E2D29}.chip.warn{color:#E9B95F;border-color:#705725;background:#2A2316}.chip.bad{color:#FF7A86;border-color:#79313A;background:#31181D}
+.panel{display:none}.panel.active{display:block}
+.formLayout{display:grid;grid-template-columns:.8fr 1.2fr;gap:16px}
+.formCard,.calcCard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.formCard h2,.calcCard h2{margin:0;color:#fff;font-size:18px}.formCard p,.calcCard p{font-size:11px;color:#8992A3;line-height:1.5}
+.field{display:grid;gap:6px;margin-top:12px}.field label{font-size:11px;color:#9BA3B4}.field input{width:100%;background:#12161E;color:#fff;border:1px solid #333A49;border-radius:9px;padding:11px 12px;outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(41,98,255,.12)}
+.calcGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}.calcBox{background:#171B23;border:1px solid #2D3442;border-radius:11px;padding:14px}.calcBox small{color:#7D8697}.calcBox b{display:block;color:#fff;font-size:21px;margin-top:7px}
+.whatifWrap{max-width:900px;margin:0 auto}.whatifHero{text-align:center;margin-bottom:18px}.whatifHero h2{font-size:27px;margin:0;color:#fff}.whatifHero p{font-size:12px;color:#8D96A8;max-width:620px;margin:8px auto 0;line-height:1.5}
+.sim{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px}.simGrid{display:grid;grid-template-columns:1fr auto;gap:10px}.sim input{background:#12161E;border:1px solid #343B4A;color:white;border-radius:10px;padding:13px}.result{margin-top:16px;border:1px solid #176A5A;background:var(--green-soft);border-radius:12px;padding:16px}.result.caution{border-color:#735B24;background:#2B2416}.result.danger{border-color:#7A2C35;background:var(--red-soft)}
+.result h3{margin:0;color:#fff;font-size:17px}.result p{margin:5px 0 0;font-size:11px;color:#A0A8B8}.resultGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}.mini{background:#151A22;border:1px solid #303746;border-radius:10px;padding:11px}.mini small{color:#7D8698}.mini b{display:block;margin-top:4px;color:white}
+.compare{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.firm{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px}.firm h3{margin:0;color:#fff}.firm p{font-size:11px;color:#8891A2}.firm dl{display:grid;gap:10px;margin-top:15px}.firm dl div{display:flex;justify-content:space-between;font-size:12px}.firm dt{color:#858E9F}.firm dd{margin:0;color:#E4E7EC}
+.disclaimer{font-size:10px;color:#626B7A;text-align:center;margin-top:16px}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid #242A36}.sideNav{grid-template-columns:repeat(5,1fr)}.sideNote{display:none}.command,.formLayout{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.topbar{padding:0 14px}.content{padding:14px}.sideNav{grid-template-columns:1fr 1fr}.metrics,.sectionGrid,.compare,.calcGrid,.resultGrid{grid-template-columns:1fr}.simGrid{grid-template-columns:1fr}.hero h1{font-size:25px}.sidebar{padding:16px}.status{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
-<div class="app">
-  <header class="header">
+<div class="layout">
+  <aside class="sidebar">
     <div class="brand">
       <div class="logo">PL</div>
-      <div>
-        <div class="eyebrow">Product Concept</div>
-        <div class="brandTitle">Prop Firm Legion</div>
-        <div class="brandSub">Risk & Payout Assistant for prop traders</div>
-      </div>
+      <div><div class="brandName">Prop Firm Legion</div><div class="brandSub">Trader Risk Assistant</div></div>
     </div>
-    <div class="pill">Decision support · Not trade signals</div>
-  </header>
-
-  <main class="shell">
-    <nav class="nav">
+    <div class="sideLabel">Workspace</div>
+    <nav class="sideNav">
       <button class="active" data-tab="today">Today</button>
       <button data-tab="challenge">My Challenge</button>
-      <button data-tab="whatif">What‑If Risk</button>
+      <button data-tab="whatif">What-If Risk</button>
       <button data-tab="payout">Payout</button>
       <button data-tab="compare">Compare Firms</button>
     </nav>
+    <div class="sideNote">Decision-support concept only. It does not tell traders which trade to take or predict market direction.</div>
+  </aside>
 
-    <section id="today" class="panel active">
-      <div class="grid heroGrid">
-        <div class="card">
-          <div class="kicker">Primary question</div>
-          <div class="h1" style="margin-top:8px">Can I trade safely today?</div>
-          <div class="note" style="margin-top:9px">This assistant does not predict the market. It helps a trader understand rule pressure, remaining drawdown and payout constraints before taking more risk.</div>
-          <div id="todayStatus" class="heroStatus" style="margin-top:18px">
-            <div style="display:flex;align-items:center;gap:12px">
-              <span class="statusDot"></span>
-              <div>
-                <div id="todayStatusTitle" class="statusTitle">GOOD TO TRADE</div>
-                <div id="todayStatusDesc" class="statusDesc">Current demo account is comfortably inside its daily and maximum loss limits.</div>
+  <main class="main">
+    <header class="topbar">
+      <div><div class="pageTitle" id="pageTitle">Today</div><div class="pageSub">Know your account pressure before taking more risk.</div></div>
+      <div class="demoPill">Interactive concept · Demo data</div>
+    </header>
+
+    <div class="content">
+      <section id="today" class="panel active">
+        <div class="command">
+          <div class="hero">
+            <div class="kicker">Daily decision support</div>
+            <h1>Can I safely take more risk today?</h1>
+            <p>The platform does not predict the market. It translates prop-firm rules and your account numbers into a clear view of remaining risk, challenge progress and payout pressure.</p>
+            <div id="todayStatus" class="status">
+              <div class="statusLeft"><span class="dot"></span><div><strong id="todayStatusTitle">ACCOUNT WITHIN SAFE LIMITS</strong><span id="todayStatusDesc">You still have a healthy drawdown buffer based on the current inputs.</span></div></div>
+              <div id="statusScore" class="score">Low pressure</div>
+            </div>
+          </div>
+          <div class="actionCard">
+            <div><div class="kicker">Most useful action</div><h2 style="margin-top:8px">Test your next risk before placing the trade.</h2><p>Enter the amount you plan to risk and instantly see how much daily and maximum drawdown would remain.</p></div>
+            <button class="btn" id="goWhatIf">Open What-If Simulator</button>
+          </div>
+        </div>
+
+        <div class="metrics">
+          <div class="card"><div class="metricName">Current Equity</div><div class="metricVal" id="equityMetric">$105,200</div><div class="metricFoot">Live/manual account value</div></div>
+          <div class="card"><div class="metricName">Daily DD Left</div><div class="metricVal green" id="dailyMetric">$4,200</div><div class="metricFoot">Remaining loss capacity today</div></div>
+          <div class="card"><div class="metricName">Max DD Left</div><div class="metricVal green" id="maxMetric">$8,200</div><div class="metricFoot">Overall account buffer</div></div>
+          <div class="card"><div class="metricName">Profit Target</div><div class="metricVal blue" id="targetMetric">65%</div><div class="metricFoot">Challenge completion progress</div></div>
+        </div>
+
+        <div class="sectionGrid">
+          <div class="panelCard">
+            <div class="panelHead"><div><h3>Challenge health</h3><p>Core rules that matter before the next trade.</p></div><span class="chip ok" id="healthChip">Healthy</span></div>
+            <div class="ruleRows">
+              <div class="ruleRow"><b>Daily loss buffer</b><span class="green" id="dailyLeftHero">$4,200 left</span></div>
+              <div class="ruleRow"><b>Maximum loss buffer</b><span class="green" id="maxLeftHero">$8,200 left</span></div>
+              <div class="ruleRow"><b>Consistency</b><span class="blue" id="consistencyHero">28.8%</span></div>
+              <div class="ruleRow"><b>Payout readiness</b><span class="amber" id="payoutHero">3 / 4 checks</span></div>
+            </div>
+          </div>
+          <div class="panelCard">
+            <div class="panelHead"><div><h3>Challenge progress</h3><p>See how close you are without chasing the target.</p></div></div>
+            <div style="margin-top:18px"><div style="display:flex;justify-content:space-between;font-size:12px"><span>Current profit</span><b id="progressText">$5,200 / $8,000</b></div><div class="progress" style="margin-top:9px"><span id="progressBar" style="width:65%"></span></div></div>
+            <div style="margin-top:24px;padding:13px;background:#171B23;border:1px solid #2B3140;border-radius:10px"><div class="kicker">Design principle</div><div style="font-size:13px;color:#E8EBF0;margin-top:6px">Protect the account first. Target progress comes second.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="challenge" class="panel">
+        <div class="formLayout">
+          <form class="formCard" id="challengeForm">
+            <h2>My Challenge</h2><p>For the first version, a trader enters the core account and prop-firm rules manually.</p>
+            <div class="field"><label>Account size</label><input id="accountSize" type="number" value="100000" min="1000" step="1000"></div>
+            <div class="field"><label>Current equity</label><input id="currentEquity" type="number" value="105200" min="0" step="100"></div>
+            <div class="field"><label>Start-of-day equity</label><input id="dayStartEquity" type="number" value="106000" min="0" step="100"></div>
+            <div class="field"><label>Daily loss limit %</label><input id="dailyLimitPct" type="number" value="5" min="0.1" max="50" step="0.1"></div>
+            <div class="field"><label>Maximum loss limit %</label><input id="maxLimitPct" type="number" value="10" min="0.1" max="80" step="0.1"></div>
+            <div class="field"><label>Profit target %</label><input id="profitTargetPct" type="number" value="8" min="0.1" max="100" step="0.1"></div>
+            <div class="field"><label>Best profit day</label><input id="bestDay" type="number" value="1500" min="0" step="50"></div>
+            <div class="field"><label>Completed trading days</label><input id="tradingDays" type="number" value="4" min="0" step="1"></div>
+            <button type="submit" class="btn" style="width:100%;margin-top:14px">Update dashboard</button>
+          </form>
+          <div class="calcCard">
+            <h2>Calculated limits</h2><p>The platform converts raw rules into numbers the trader can understand at a glance.</p>
+            <div class="calcGrid">
+              <div class="calcBox"><small>Daily loss limit</small><b id="outDailyLimit">$5,000</b></div>
+              <div class="calcBox"><small>Max loss limit</small><b id="outMaxLimit">$10,000</b></div>
+              <div class="calcBox"><small>Profit target</small><b id="outTarget">$8,000</b></div>
+              <div class="calcBox"><small>Current profit</small><b id="outProfit">$5,200</b></div>
+            </div>
+            <div class="panelCard" style="margin-top:14px">
+              <div class="panelHead"><div><h3>Why this matters</h3><p>The trader does not need to calculate everything manually before every session.</p></div></div>
+              <div class="ruleRows">
+                <div class="ruleRow"><b>Daily DD remaining</b><span id="outDailyRemain" class="green">$4,200</span></div>
+                <div class="ruleRow"><b>Max DD remaining</b><span id="outMaxRemain" class="green">$8,200</span></div>
+                <div class="ruleRow"><b>Target progress</b><span id="outProgress" class="blue">65%</span></div>
+                <div class="ruleRow"><b>Best-day consistency</b><span id="outConsistency" class="blue">28.8%</span></div>
               </div>
             </div>
-            <div id="statusScore" class="chip ok">Low pressure</div>
-          </div>
-          <div style="margin-top:20px">
-            <div class="item"><span class="label">Challenge progress</span><b id="progressText">$5,200 / $8,000</b></div>
-            <div class="progress" style="margin-top:9px"><span id="progressBar" style="width:65%"></span></div>
           </div>
         </div>
+      </section>
 
-        <div class="card soft">
-          <div class="h2">Today at a glance</div>
-          <div class="list">
-            <div class="item"><span><b>Daily drawdown</b><div class="small muted">Loss capacity left today</div></span><strong id="dailyLeftHero" class="green">$4,200</strong></div>
-            <div class="item"><span><b>Maximum drawdown</b><div class="small muted">Overall account buffer</div></span><strong id="maxLeftHero" class="green">$8,200</strong></div>
-            <div class="item"><span><b>Consistency</b><div class="small muted">Best-day share of total profit</div></span><strong id="consistencyHero" class="blue">28.8%</strong></div>
-            <div class="item"><span><b>Payout readiness</b><div class="small muted">Rules currently satisfied</div></span><strong id="payoutHero" class="amber">3 / 4</strong></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid stats">
-        <div class="card metric"><div class="kicker">Equity</div><div id="equityMetric" class="value">$105,200</div><div class="small muted">Current account equity</div></div>
-        <div class="card metric"><div class="kicker">Daily DD Left</div><div id="dailyMetric" class="value">$4,200</div><div class="small green">Remaining today</div></div>
-        <div class="card metric"><div class="kicker">Max DD Left</div><div id="maxMetric" class="value">$8,200</div><div class="small green">Remaining overall</div></div>
-        <div class="card metric"><div class="kicker">Profit Target</div><div id="targetMetric" class="value">65%</div><div class="small blue">Challenge progress</div></div>
-      </div>
-    </section>
-
-    <section id="challenge" class="panel">
-      <div class="grid formgrid">
-        <form id="challengeForm" class="card">
-          <div class="h2">Challenge setup</div>
-          <div class="note" style="margin:5px 0 16px">For the first version, traders can enter their numbers manually. API sync can be added later.</div>
-          <label class="field"><span>Account size</span><input id="accountSize" type="number" min="1000" step="1000" value="100000"></label>
-          <label class="field"><span>Current equity</span><input id="currentEquity" type="number" min="0" step="100" value="105200"></label>
-          <label class="field"><span>Start-of-day equity</span><input id="dayStartEquity" type="number" min="0" step="100" value="106000"></label>
-          <label class="field"><span>Daily loss limit %</span><input id="dailyLimitPct" type="number" min="1" max="20" step=".1" value="5"></label>
-          <label class="field"><span>Maximum loss limit %</span><input id="maxLossPct" type="number" min="1" max="30" step=".1" value="10"></label>
-          <label class="field"><span>Profit target %</span><input id="profitTargetPct" type="number" min="1" max="30" step=".1" value="8"></label>
-          <label class="field"><span>Total challenge profit</span><input id="totalProfit" type="number" min="0" step="100" value="5200"></label>
-          <label class="field"><span>Best winning day profit</span><input id="bestDayProfit" type="number" min="0" step="50" value="1500"></label>
-          <label class="field"><span>Consistency cap %</span><input id="consistencyCap" type="number" min="1" max="100" step=".1" value="40"></label>
-          <div class="grid two">
-            <label class="field"><span>Trading days completed</span><input id="tradingDays" type="number" min="0" max="100" step="1" value="4"></label>
-            <label class="field"><span>Minimum trading days</span><input id="minTradingDays" type="number" min="0" max="100" step="1" value="5"></label>
-          </div>
-          <button class="btn" type="submit">Update dashboard</button>
-        </form>
-
-        <div class="card">
-          <div class="h2">Automatic rule snapshot</div>
-          <div class="note" style="margin-top:5px">The product converts trader-entered rules into practical limits and readiness checks.</div>
-          <div class="grid two" style="margin-top:16px">
-            <div class="card soft"><div class="kicker">Daily loss allowance</div><div id="dailyAllowance" class="big" style="margin-top:8px">$5,000</div></div>
-            <div class="card soft"><div class="kicker">Maximum loss allowance</div><div id="maxAllowance" class="big" style="margin-top:8px">$10,000</div></div>
-            <div class="card soft"><div class="kicker">Daily loss used</div><div id="dailyUsed" class="big" style="margin-top:8px">$800</div></div>
-            <div class="card soft"><div class="kicker">Maximum loss used</div><div id="maxUsed" class="big" style="margin-top:8px">$0</div></div>
-          </div>
-
-          <div class="callout" style="margin-top:16px">
-            <div class="h2">Why this is useful</div>
-            <div class="note" style="margin-top:7px">Instead of the website telling a trader to buy or sell, it answers a safer question: <b style="color:#fff">“How much room do I have left before my prop rules become dangerous?”</b></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="whatif" class="panel">
-      <div class="grid two">
-        <div class="whatif">
-          <div class="kicker">Risk simulator</div>
-          <div class="h1" style="margin-top:7px">What if my next trade loses?</div>
-          <div class="note" style="margin-top:8px">Enter the maximum amount you are prepared to lose on the next trade. The tool shows the projected rule pressure before the trade is taken.</div>
-          <label class="field" style="margin-top:18px"><span>Next trade risk amount</span><input id="nextRisk" type="number" min="0" step="50" value="300"></label>
-          <button id="checkRisk" type="button" class="btn">Check projected impact</button>
-          <div id="riskResult" class="resultBox">
-            <div id="riskHeadline" class="resultHeadline">Projected status: SAFE</div>
-            <div id="riskCopy" class="note" style="margin-top:5px">A $300 loss would still leave the account within the current demo limits.</div>
-            <div class="resultGrid">
-              <div class="mini"><div class="label">Projected equity</div><b id="projectedEquity">$104,900</b></div>
-              <div class="mini"><div class="label">Daily DD left</div><b id="projectedDaily">$3,900</b></div>
-              <div class="mini"><div class="label">Max DD left</div><b id="projectedMax">$7,900</b></div>
+      <section id="whatif" class="panel">
+        <div class="whatifWrap">
+          <div class="whatifHero"><div class="kicker">Core product feature</div><h2>What happens if I risk this amount?</h2><p>This does not tell the trader whether the market will win or lose. It shows what the account would look like if the planned risk is fully lost.</p></div>
+          <div class="sim">
+            <div class="simGrid"><input id="plannedRisk" type="number" value="800" min="0" step="50" aria-label="Planned risk amount"><button id="simulateBtn" class="btn">Check Risk Impact</button></div>
+            <div id="resultBox" class="result">
+              <h3 id="resultTitle">SAFE BUFFER REMAINS</h3>
+              <p id="resultDesc">If the full planned risk is lost, the account would still remain inside the configured limits.</p>
+              <div class="resultGrid">
+                <div class="mini"><small>Equity after loss</small><b id="riskEquity">$104,400</b></div>
+                <div class="mini"><small>Daily DD left</small><b id="riskDaily">$3,400</b></div>
+                <div class="mini"><small>Max DD left</small><b id="riskMax">$7,400</b></div>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div class="card">
-          <div class="h2">Simple risk logic</div>
-          <div class="list">
-            <div class="item"><span><b>Green</b><div class="small muted">Comfortable rule buffer remains</div></span><span class="chip ok">Safe zone</span></div>
-            <div class="item"><span><b>Yellow</b><div class="small muted">Trade uses most of remaining buffer</div></span><span class="chip warn">Caution</span></div>
-            <div class="item"><span><b>Red</b><div class="small muted">Projected loss would breach a rule</div></span><span class="chip bad">Do not exceed</span></div>
-          </div>
-          <hr class="sep">
-          <div class="note">This is decision support, not a market prediction engine. It helps the trader size risk against known prop-firm limits.</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="payout" class="panel">
-      <div class="grid two">
-        <div class="card">
-          <div class="kicker">Payout readiness</div>
-          <div class="h1" style="margin-top:7px">Am I actually ready for payout?</div>
-          <div class="note" style="margin-top:8px">The assistant checks the rules that commonly delay payout even after a trader is profitable.</div>
-          <div class="list" style="margin-top:18px">
-            <div class="item"><span><b>Profit requirement</b></span><span id="profitCheck" class="chip warn">Not yet</span></div>
-            <div class="item"><span><b>Consistency rule</b></span><span id="consistencyCheck" class="chip ok">Passed</span></div>
-            <div class="item"><span><b>Minimum trading days</b></span><span id="daysCheck" class="chip warn">1 day left</span></div>
-            <div class="item"><span><b>No drawdown breach</b></span><span id="breachCheck" class="chip ok">Passed</span></div>
+      <section id="payout" class="panel">
+        <div class="panelCard">
+          <div class="panelHead"><div><h3>Payout readiness</h3><p>A simple checklist so traders know what still blocks a payout request.</p></div><span id="payoutChip" class="chip warn">Not ready yet</span></div>
+          <div class="ruleRows">
+            <div class="ruleRow"><b>Profit target reached</b><span id="checkTarget" class="chip warn">Pending</span></div>
+            <div class="ruleRow"><b>Minimum trading days</b><span id="checkDays" class="chip ok">Passed</span></div>
+            <div class="ruleRow"><b>Consistency within example limit</b><span id="checkConsistency" class="chip ok">Passed</span></div>
+            <div class="ruleRow"><b>No drawdown breach</b><span id="checkDrawdown" class="chip ok">Passed</span></div>
           </div>
         </div>
-        <div class="card soft">
-          <div class="h2">Readiness summary</div>
-          <div id="payoutSummary" class="callout" style="margin-top:14px">
-            <div id="payoutSummaryTitle" class="h2">Not ready yet</div>
-            <div id="payoutSummaryCopy" class="note" style="margin-top:6px">The demo account still needs more profit and one more qualifying trading day.</div>
-          </div>
-          <div class="note" style="margin-top:14px">A real product could also show the specific rule blocking payout and the exact requirement remaining.</div>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="compare" class="panel">
-      <div class="h1">Compare rules, not just prices</div>
-      <div class="note" style="margin-top:7px">The affiliate layer becomes useful because the trader can compare how each firm's rules fit their style before clicking an offer.</div>
-      <div class="grid compareGrid" style="margin-top:18px">
-        <article class="card firm">
-          <div class="h2">Firm Alpha</div><div class="small muted">Illustrative data</div>
-          <dl>
-            <div><dt>Daily DD</dt><dd>5%</dd></div>
-            <div><dt>Max DD</dt><dd>10%</dd></div>
-            <div><dt>Consistency</dt><dd>40%</dd></div>
-            <div><dt>Min days</dt><dd>5</dd></div>
-          </dl>
-          <button class="btn secondary" style="width:100%;margin-top:16px" type="button">View rules</button>
-        </article>
-        <article class="card firm">
-          <div class="h2">Firm Beta</div><div class="small muted">Illustrative data</div>
-          <dl>
-            <div><dt>Daily DD</dt><dd>4%</dd></div>
-            <div><dt>Max DD</dt><dd>8%</dd></div>
-            <div><dt>Consistency</dt><dd>None</dd></div>
-            <div><dt>Min days</dt><dd>3</dd></div>
-          </dl>
-          <button class="btn" style="width:100%;margin-top:16px" type="button">Affiliate CTA</button>
-        </article>
-        <article class="card firm">
-          <div class="h2">Firm Gamma</div><div class="small muted">Illustrative data</div>
-          <dl>
-            <div><dt>Daily DD</dt><dd>5%</dd></div>
-            <div><dt>Max DD</dt><dd>10%</dd></div>
-            <div><dt>Consistency</dt><dd>30%</dd></div>
-            <div><dt>Min days</dt><dd>5</dd></div>
-          </dl>
-          <button class="btn secondary" style="width:100%;margin-top:16px" type="button">View rules</button>
-        </article>
-      </div>
-      <div class="callout" style="margin-top:16px">
-        <div class="h2">Business model fit</div>
-        <div class="note" style="margin-top:6px">Useful decision tool first. Affiliate conversion second. That makes the comparison flow feel like help rather than a promotional page.</div>
-      </div>
-    </section>
+      <section id="compare" class="panel">
+        <div class="panelHead" style="margin-bottom:14px"><div><h3>Compare firms by rules, not just price</h3><p>Illustrative data only. In a working version, actual selected firms and affiliate links can be added.</p></div></div>
+        <div class="compare">
+          <article class="firm"><h3>Firm Alpha</h3><p>Two-step evaluation</p><dl><div><dt>Profit target</dt><dd>8% / 5%</dd></div><div><dt>Daily DD</dt><dd>5%</dd></div><div><dt>Max DD</dt><dd>10%</dd></div><div><dt>News trading</dt><dd>Restricted</dd></div></dl><button class="btn" style="width:100%;margin-top:15px">View Rules</button></article>
+          <article class="firm"><h3>Firm Beta</h3><p>One-step evaluation</p><dl><div><dt>Profit target</dt><dd>10%</dd></div><div><dt>Daily DD</dt><dd>4%</dd></div><div><dt>Max DD</dt><dd>8%</dd></div><div><dt>News trading</dt><dd>Allowed</dd></div></dl><button class="btn" style="width:100%;margin-top:15px">View Rules</button></article>
+          <article class="firm"><h3>Firm Gamma</h3><p>Balanced model</p><dl><div><dt>Profit target</dt><dd>9% / 5%</dd></div><div><dt>Daily DD</dt><dd>5%</dd></div><div><dt>Max DD</dt><dd>10%</dd></div><div><dt>News trading</dt><dd>Conditional</dd></div></dl><button class="btn" style="width:100%;margin-top:15px">View Rules</button></article>
+        </div>
+      </section>
+
+      <div class="disclaimer">Concept only · Demo data · No trade recommendations · No profit guarantee</div>
+    </div>
   </main>
-
-  <div class="footer">Concept only · Demo values · No market predictions · No financial advice</div>
 </div>
 
 <script>
-const q=id=>document.getElementById(id);
-const tabs=[...document.querySelectorAll('.nav button')];
-const panels=[...document.querySelectorAll('.panel')];
-tabs.forEach(btn=>btn.addEventListener('click',()=>{
-  tabs.forEach(b=>b.classList.toggle('active',b===btn));
-  panels.forEach(p=>p.classList.toggle('active',p.id===btn.dataset.tab));
-}));
-
-const fmt=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Math.max(0,n));
-const pct=n=>(Number.isFinite(n)?n:0).toFixed(1)+'%';
-const clamp=(v,min,max,fallback)=>Math.min(max,Math.max(min,Number(v)||fallback));
-
-function readState(){
-  return {
-    account:clamp(q('accountSize').value,1000,10000000,100000),
-    equity:clamp(q('currentEquity').value,0,10000000,105200),
-    dayStart:clamp(q('dayStartEquity').value,0,10000000,106000),
-    dailyPct:clamp(q('dailyLimitPct').value,1,20,5),
-    maxPct:clamp(q('maxLossPct').value,1,30,10),
-    targetPct:clamp(q('profitTargetPct').value,1,30,8),
-    totalProfit:clamp(q('totalProfit').value,0,10000000,5200),
-    bestDay:clamp(q('bestDayProfit').value,0,10000000,1500),
-    consistencyCap:clamp(q('consistencyCap').value,1,100,40),
-    days:clamp(q('tradingDays').value,0,100,4),
-    minDays:clamp(q('minTradingDays').value,0,100,5)
-  };
+const $=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Math.max(0,n));
+const state={account:100000,equity:105200,dayStart:106000,dailyPct:5,maxPct:10,targetPct:8,bestDay:1500,days:4};
+function calc(){
+  const dailyLimit=state.account*state.dailyPct/100;
+  const maxLimit=state.account*state.maxPct/100;
+  const target=state.account*state.targetPct/100;
+  const profit=state.equity-state.account;
+  const dayLoss=Math.max(0,state.dayStart-state.equity);
+  const totalLoss=Math.max(0,state.account-state.equity);
+  const dailyRemain=dailyLimit-dayLoss;
+  const maxRemain=maxLimit-totalLoss;
+  const progress=target>0?Math.max(0,Math.min(100,(profit/target)*100)):0;
+  const consistency=profit>0?(state.bestDay/profit)*100:0;
+  return{dailyLimit,maxLimit,target,profit,dayLoss,totalLoss,dailyRemain,maxRemain,progress,consistency};
 }
-function calc(s, projectedEquity=s.equity){
-  const dailyAllowance=s.account*s.dailyPct/100;
-  const maxAllowance=s.account*s.maxPct/100;
-  const dailyUsed=Math.max(0,s.dayStart-projectedEquity);
-  const maxUsed=Math.max(0,s.account-projectedEquity);
-  const dailyLeft=dailyAllowance-dailyUsed;
-  const maxLeft=maxAllowance-maxUsed;
-  const targetAmt=s.account*s.targetPct/100;
-  const progress=targetAmt>0?s.totalProfit/targetAmt*100:0;
-  const consistency=s.totalProfit>0?s.bestDay/s.totalProfit*100:0;
-  const breached=dailyLeft<0||maxLeft<0;
-  const bufferRatio=Math.min(
-    dailyAllowance>0?dailyLeft/dailyAllowance:0,
-    maxAllowance>0?maxLeft/maxAllowance:0
-  );
-  let pressure='safe';
-  if(breached||bufferRatio<=0) pressure='danger';
-  else if(bufferRatio<.25) pressure='caution';
-  return {dailyAllowance,maxAllowance,dailyUsed,maxUsed,dailyLeft,maxLeft,targetAmt,progress,consistency,breached,pressure};
+function paint(){
+  const c=calc();
+  $('equityMetric').textContent=money(state.equity);
+  $('dailyMetric').textContent=money(c.dailyRemain);
+  $('maxMetric').textContent=money(c.maxRemain);
+  $('targetMetric').textContent=Math.round(c.progress)+'%';
+  $('dailyLeftHero').textContent=money(c.dailyRemain)+' left';
+  $('maxLeftHero').textContent=money(c.maxRemain)+' left';
+  $('consistencyHero').textContent=(isFinite(c.consistency)?c.consistency:0).toFixed(1)+'%';
+  const targetOk=c.progress>=100,daysOk=state.days>=5,consistencyOk=c.consistency<=40,drawdownOk=c.dailyRemain>=0&&c.maxRemain>=0;
+  const count=[targetOk,daysOk,consistencyOk,drawdownOk].filter(Boolean).length;
+  $('payoutHero').textContent=count+' / 4 checks';
+  $('progressText').textContent=money(Math.max(0,c.profit))+' / '+money(c.target);
+  $('progressBar').style.width=c.progress+'%';
+  $('outDailyLimit').textContent=money(c.dailyLimit);$('outMaxLimit').textContent=money(c.maxLimit);$('outTarget').textContent=money(c.target);$('outProfit').textContent=money(c.profit);
+  $('outDailyRemain').textContent=money(c.dailyRemain);$('outMaxRemain').textContent=money(c.maxRemain);$('outProgress').textContent=Math.round(c.progress)+'%';$('outConsistency').textContent=(isFinite(c.consistency)?c.consistency:0).toFixed(1)+'%';
+  $('checkTarget').className='chip '+(targetOk?'ok':'warn');$('checkTarget').textContent=targetOk?'Passed':'Pending';
+  $('checkDays').className='chip '+(daysOk?'ok':'warn');$('checkDays').textContent=daysOk?'Passed':'Pending';
+  $('checkConsistency').className='chip '+(consistencyOk?'ok':'bad');$('checkConsistency').textContent=consistencyOk?'Passed':'Over limit';
+  $('checkDrawdown').className='chip '+(drawdownOk?'ok':'bad');$('checkDrawdown').textContent=drawdownOk?'Passed':'Breach';
+  $('payoutChip').className='chip '+(count===4?'ok':'warn');$('payoutChip').textContent=count===4?'Ready':'Not ready yet';
+  const ratio=Math.min(c.dailyRemain/c.dailyLimit,c.maxRemain/c.maxLimit);
+  const box=$('todayStatus');
+  box.className='status';
+  if(c.dailyRemain<0||c.maxRemain<0){box.classList.add('danger');$('todayStatusTitle').textContent='RULE LIMIT BREACHED';$('todayStatusDesc').textContent='Current inputs indicate the account is beyond a configured drawdown limit.';$('statusScore').textContent='Critical';$('healthChip').className='chip bad';$('healthChip').textContent='Critical'}
+  else if(ratio<.25){box.classList.add('danger');$('todayStatusTitle').textContent='HIGH RISK PRESSURE';$('todayStatusDesc').textContent='Very little drawdown room remains. Additional risk could threaten the account.';$('statusScore').textContent='High pressure';$('healthChip').className='chip bad';$('healthChip').textContent='High risk'}
+  else if(ratio<.5){box.classList.add('caution');$('todayStatusTitle').textContent='CAUTION — BUFFER REDUCED';$('todayStatusDesc').textContent='The account remains inside limits, but available drawdown room is becoming tight.';$('statusScore').textContent='Medium pressure';$('healthChip').className='chip warn';$('healthChip').textContent='Caution'}
+  else{$('todayStatusTitle').textContent='ACCOUNT WITHIN SAFE LIMITS';$('todayStatusDesc').textContent='You still have a healthy drawdown buffer based on the current inputs.';$('statusScore').textContent='Low pressure';$('healthChip').className='chip ok';$('healthChip').textContent='Healthy'}
+  simulate();
 }
-function chip(el,state,text){
-  el.className='chip '+state;
-  el.textContent=text;
+function simulate(){
+  const risk=Math.max(0,Number($('plannedRisk').value)||0),c=calc(),after=state.equity-risk;
+  const dayLoss=Math.max(0,state.dayStart-after),totalLoss=Math.max(0,state.account-after);
+  const d=c.dailyLimit-dayLoss,m=c.maxLimit-totalLoss;
+  $('riskEquity').textContent=money(after);$('riskDaily').textContent=money(d);$('riskMax').textContent=money(m);
+  const r=$('resultBox');r.className='result';
+  const ratio=Math.min(d/c.dailyLimit,m/c.maxLimit);
+  if(d<0||m<0){r.classList.add('danger');$('resultTitle').textContent='THIS RISK WOULD BREACH A LIMIT';$('resultDesc').textContent='If the planned amount is fully lost, at least one configured drawdown limit would be exceeded.'}
+  else if(ratio<.25){r.classList.add('danger');$('resultTitle').textContent='HIGH RISK — VERY LITTLE BUFFER';$('resultDesc').textContent='The trade would leave the account extremely close to a configured drawdown limit.'}
+  else if(ratio<.5){r.classList.add('caution');$('resultTitle').textContent='CAUTION — BUFFER BECOMES TIGHT';$('resultDesc').textContent='The trade stays within the current rules, but materially reduces the remaining loss capacity.'}
+  else{$('resultTitle').textContent='SAFE BUFFER REMAINS';$('resultDesc').textContent='If the full planned risk is lost, the account would still remain inside the configured limits.'}
 }
-function updateAll(){
-  const s=readState();
-  const c=calc(s);
-  q('dailyAllowance').textContent=fmt(c.dailyAllowance);
-  q('maxAllowance').textContent=fmt(c.maxAllowance);
-  q('dailyUsed').textContent=fmt(c.dailyUsed);
-  q('maxUsed').textContent=fmt(c.maxUsed);
-  q('equityMetric').textContent=fmt(s.equity);
-  q('dailyMetric').textContent=fmt(c.dailyLeft);
-  q('maxMetric').textContent=fmt(c.maxLeft);
-  q('dailyLeftHero').textContent=fmt(c.dailyLeft);
-  q('maxLeftHero').textContent=fmt(c.maxLeft);
-  q('targetMetric').textContent=Math.max(0,Math.min(100,c.progress)).toFixed(0)+'%';
-  q('progressText').textContent=fmt(s.totalProfit)+' / '+fmt(c.targetAmt);
-  q('progressBar').style.width=Math.max(0,Math.min(100,c.progress))+'%';
-  q('consistencyHero').textContent=pct(c.consistency);
-
-  const profitPass=s.totalProfit>=c.targetAmt;
-  const consistencyPass=c.consistency<=s.consistencyCap;
-  const daysPass=s.days>=s.minDays;
-  const breachPass=!c.breached;
-  const passed=[profitPass,consistencyPass,daysPass,breachPass].filter(Boolean).length;
-  q('payoutHero').textContent=passed+' / 4';
-
-  chip(q('profitCheck'),profitPass?'ok':'warn',profitPass?'Passed':'Not yet');
-  chip(q('consistencyCheck'),consistencyPass?'ok':'bad',consistencyPass?'Passed':'Over cap');
-  chip(q('daysCheck'),daysPass?'ok':'warn',daysPass?'Passed':Math.max(0,s.minDays-s.days)+' day'+(s.minDays-s.days===1?'':'s')+' left');
-  chip(q('breachCheck'),breachPass?'ok':'bad',breachPass?'Passed':'Breached');
-
-  if(passed===4){
-    q('payoutSummaryTitle').textContent='Payout ready';
-    q('payoutSummaryCopy').textContent='All four demo conditions are currently satisfied.';
-  }else{
-    q('payoutSummaryTitle').textContent='Not ready yet';
-    const blockers=[];
-    if(!profitPass) blockers.push('profit target');
-    if(!consistencyPass) blockers.push('consistency');
-    if(!daysPass) blockers.push('minimum trading days');
-    if(!breachPass) blockers.push('drawdown rule');
-    q('payoutSummaryCopy').textContent='Still blocked by: '+blockers.join(', ')+'.';
-  }
-
-  const status=q('todayStatus');
-  status.classList.remove('caution','danger');
-  if(c.pressure==='safe'){
-    q('todayStatusTitle').textContent='GOOD TO TRADE';
-    q('todayStatusDesc').textContent='Current account is inside its demo loss limits with a reasonable buffer.';
-    chip(q('statusScore'),'ok','Low pressure');
-  }else if(c.pressure==='caution'){
-    status.classList.add('caution');
-    q('todayStatusTitle').textContent='CAUTION';
-    q('todayStatusDesc').textContent='The account is still inside limits, but the remaining drawdown buffer is getting tight.';
-    chip(q('statusScore'),'warn','High pressure');
-  }else{
-    status.classList.add('danger');
-    q('todayStatusTitle').textContent='RULE BREACH RISK';
-    q('todayStatusDesc').textContent='The current demo numbers indicate one or more loss limits have been exceeded.';
-    chip(q('statusScore'),'bad','Stop');
-  }
-  runWhatIf();
-}
-function runWhatIf(){
-  const s=readState();
-  const risk=clamp(q('nextRisk').value,0,10000000,300);
-  q('nextRisk').value=risk;
-  const projected=Math.max(0,s.equity-risk);
-  const c=calc(s,projected);
-  q('projectedEquity').textContent=fmt(projected);
-  q('projectedDaily').textContent=fmt(c.dailyLeft);
-  q('projectedMax').textContent=fmt(c.maxLeft);
-  const box=q('riskResult');
-  box.classList.remove('caution','danger');
-  if(c.pressure==='danger'){
-    box.classList.add('danger');
-    q('riskHeadline').textContent='Projected status: RULE BREACH';
-    q('riskCopy').textContent='A '+fmt(risk)+' loss would exceed at least one configured loss limit.';
-  }else if(c.pressure==='caution'){
-    box.classList.add('caution');
-    q('riskHeadline').textContent='Projected status: CAUTION';
-    q('riskCopy').textContent='A '+fmt(risk)+' loss would leave only a small drawdown buffer.';
-  }else{
-    q('riskHeadline').textContent='Projected status: SAFE';
-    q('riskCopy').textContent='A '+fmt(risk)+' loss would still keep the account inside the configured demo limits.';
-  }
-}
-q('challengeForm').addEventListener('submit',e=>{e.preventDefault();updateAll()});
-q('checkRisk').addEventListener('click',runWhatIf);
-['accountSize','currentEquity','dayStartEquity','dailyLimitPct','maxLossPct','profitTargetPct','totalProfit','bestDayProfit','consistencyCap','tradingDays','minTradingDays','nextRisk']
-.forEach(id=>q(id).addEventListener('input',()=>{if(id==='nextRisk')runWhatIf();else updateAll()}));
-updateAll();
+document.querySelectorAll('.sideNav button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.tab)));
+function show(id){document.querySelectorAll('.sideNav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));$('pageTitle').textContent=id==='whatif'?'What-If Risk':id==='challenge'?'My Challenge':id.charAt(0).toUpperCase()+id.slice(1)}
+$('goWhatIf').addEventListener('click',()=>show('whatif'));$('simulateBtn').addEventListener('click',simulate);$('plannedRisk').addEventListener('input',simulate);
+$('challengeForm').addEventListener('submit',e=>{e.preventDefault();state.account=Math.max(1000,Number($('accountSize').value)||100000);state.equity=Math.max(0,Number($('currentEquity').value)||state.account);state.dayStart=Math.max(0,Number($('dayStartEquity').value)||state.equity);state.dailyPct=Math.max(.1,Number($('dailyLimitPct').value)||5);state.maxPct=Math.max(.1,Number($('maxLimitPct').value)||10);state.targetPct=Math.max(.1,Number($('profitTargetPct').value)||8);state.bestDay=Math.max(0,Number($('bestDay').value)||0);state.days=Math.max(0,Math.floor(Number($('tradingDays').value)||0));paint();show('today')});
+paint();
 </script>
 </body>
 </html>
