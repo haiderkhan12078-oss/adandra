@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prop Firm Legion — Concept</title>
+<meta name="description" content="Visual concept for a trader challenge dashboard and prop firm comparison flow.">
+<style>
+:root{--bg:#09111a;--panel:#0f1a26;--panel2:#132130;--border:#233448;--text:#edf5fb;--muted:#8fa4b8;--accent:#36d58d;--accent2:#6d94ff;--amber:#f3b84a;--red:#ff6b6b}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at 85% 0%,rgba(73,115,255,.12),transparent 30%),linear-gradient(180deg,#081019,#0b131d 55%,#09111a);color:var(--text);min-height:100vh}.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 56px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:13px}.logo{width:44px;height:44px;border:1px solid #2b4156;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#142434,#0d1721);font-weight:900;color:var(--accent)}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);margin-bottom:6px}.title{font-size:21px;font-weight:760}.sub{font-size:13px;color:var(--muted);margin-top:2px}.badge{font-size:12px;color:#b9c9d6;border:1px solid var(--border);border-radius:999px;padding:8px 11px;background:#0d1823}.shell{border:1px solid var(--border);background:rgba(15,26,38,.92);border-radius:24px;overflow:hidden;box-shadow:0 28px 80px rgba(0,0,0,.28)}.tabs{display:flex;gap:9px;flex-wrap:wrap;padding:18px 20px;border-bottom:1px solid var(--border);background:rgba(10,18,27,.55)}button{font:inherit}.tab{border:1px solid var(--border);background:#0c1621;color:#aabccb;padding:10px 15px;border-radius:12px;cursor:pointer}.tab.active{background:#173024;color:#eafff5;border-color:#2f8b65}.content{padding:22px}.grid{display:grid;gap:16px}.overview{grid-template-columns:1.05fr 1.4fr}.card{border:1px solid var(--border);background:linear-gradient(180deg,rgba(20,34,48,.96),rgba(13,24,35,.96));border-radius:18px;padding:18px}.muted{color:var(--muted)}.small{font-size:12px}.label{font-size:13px;color:var(--muted)}.big{font-size:30px;font-weight:800;line-height:1.05}.mid{font-size:20px;font-weight:730}.progress{height:8px;background:#1c2a38;border-radius:999px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,var(--accent),#65e6aa);border-radius:inherit}.stats{grid-template-columns:repeat(2,1fr)}.metric{min-height:118px}.metric .value{font-size:26px;font-weight:800;margin-top:16px}.good{color:var(--accent)}.warn{color:var(--amber)}.risk{color:var(--red)}.section{margin-top:16px;grid-template-columns:1.35fr .65fr}.row{display:flex;justify-content:space-between;gap:14px;align-items:center}.rows{display:grid;gap:16px;margin-top:18px}.notice{border:1px solid #2c4658;background:#10202d;border-radius:14px;padding:14px;line-height:1.5}.primary{border:1px solid #329469;background:#143426;color:#edfff7;border-radius:12px;padding:12px 15px;font-weight:700;cursor:pointer;width:100%}.primary:hover{background:#183f2e}.panel{display:none}.panel.active{display:block}.formgrid{grid-template-columns:.78fr 1.22fr}.field{display:grid;gap:7px;margin-bottom:14px}.field input{width:100%;background:#0d1823;border:1px solid var(--border);color:var(--text);border-radius:12px;padding:12px 13px;font-size:16px;outline:none}.field input:focus{border-color:#3a9b73}.rulegrid{grid-template-columns:repeat(2,1fr)}.rule{background:#0c1823;border:1px solid var(--border);border-radius:14px;padding:16px}.firmgrid{grid-template-columns:repeat(3,1fr)}.firm{transition:.18s ease}.firm:hover{transform:translateY(-2px);border-color:#39607a}.tag{font-size:11px;border:1px solid var(--border);padding:5px 8px;border-radius:999px;color:#aebfd0}.firm dl{margin:18px 0 0;display:grid;gap:12px}.firm dl div{display:flex;justify-content:space-between;gap:12px;font-size:14px}.firm dt{color:var(--muted)}.firm dd{margin:0}.cta{margin-top:18px}.disclaimer{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.5}.heroLine{display:flex;align-items:center;gap:18px;margin-top:23px}.ring{width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--accent) 0 64%,#1e2c39 64%);display:grid;place-items:center;flex:0 0 auto}.ringInner{width:80px;height:80px;border-radius:50%;background:#0e1a25;display:grid;place-items:center;text-align:center}.ringInner b{font-size:22px}.footer{margin-top:17px;color:#6f8498;font-size:12px;text-align:center}
+@media(max-width:850px){.overview,.section,.formgrid,.firmgrid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.firmgrid{gap:12px}}@media(max-width:520px){.stats,.rulegrid{grid-template-columns:1fr}.wrap{padding:18px 12px 36px}.content{padding:14px}.tabs{padding:14px}.heroLine{align-items:flex-start;flex-direction:column}.big{font-size:27px}}
+/* Premium fintech theme refresh */
+:root{--bg:#061019;--panel:#0b1722;--panel2:#0f1f2d;--border:#203242;--text:#f3f7fa;--muted:#8da0b0;--accent:#36c9a3;--accent2:#6f8cff;--amber:#d7a84f;--red:#ef6b73}
+body{background:linear-gradient(180deg,#05101a 0%,#08141f 48%,#07111a 100%);color:var(--text)}
+.wrap{max-width:1200px;padding-top:34px}
+.logo{border-color:#284152;background:linear-gradient(145deg,#102231,#0a1620);color:#78dfc2;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.eyebrow{color:#7890a2}
+.title{letter-spacing:-.02em}
+.badge{color:#b8c8d4;background:#0b1721;border-color:#233846}
+.shell{background:#0a1620;border-color:#223646;box-shadow:0 28px 90px rgba(0,0,0,.32)}
+.tabs{background:#09131d;border-color:#213545}
+.tab{background:#0c1822;color:#9fb0bf;border-color:#223746}
+.tab.active{background:#112a24;color:#dffaf1;border-color:#2f806a;box-shadow:inset 0 0 0 1px rgba(54,201,163,.08)}
+.card{background:linear-gradient(180deg,#0f1d29 0%,#0b1721 100%);border-color:#213545;box-shadow:inset 0 1px 0 rgba(255,255,255,.018)}
+.notice{background:#0d1d28;border-color:#29404f}
+.primary{background:linear-gradient(180deg,#173a31,#112d27);border-color:#337b68;color:#effff9;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.primary:hover{background:linear-gradient(180deg,#1b4439,#14332c)}
+.field input{background:#091722;border-color:#243847}
+.field input:focus{border-color:#3f9d85;box-shadow:0 0 0 3px rgba(54,201,163,.08)}
+.rule{background:#0a1822;border-color:#223746}
+.tag{background:#0c1822;color:#afc0cd;border-color:#253b4b}
+.progress{background:#182734}
+.bar{background:linear-gradient(90deg,#36c9a3,#6ad9bc)}
+.ring{background:conic-gradient(#36c9a3 0 64%,#1b2b38 64%)}
+.ringInner{background:#0b1822}
+.footer{color:#647b8d}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">PL</div>
+      <div><div class="eyebrow">Concept preview</div><div class="title">Prop Firm Legion</div><div class="sub">Challenge intelligence for serious traders</div></div>
+    </div>
+    <div class="badge">Visual concept · Demo data only</div>
+  </div>
+
+  <main class="shell">
+    <nav class="tabs" aria-label="Concept sections">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="challenge">Challenge</button>
+      <button class="tab" data-tab="compare">Compare Firms</button>
+    </nav>
+
+    <section id="overview" class="panel active content">
+      <div class="grid overview">
+        <div class="card">
+          <div class="label">Active challenge</div>
+          <div class="mid" style="margin-top:5px">$100K · Two-Step</div>
+          <div class="small muted" style="margin-top:5px">Illustrative challenge setup</div>
+          <div class="heroLine">
+            <div class="ring"><div class="ringInner"><div><b>64%</b><div class="small muted">to target</div></div></div></div>
+            <div style="min-width:0;flex:1"><div class="label">Profit target</div><div class="big" style="margin-top:5px">$5,120 <span class="small muted">/ $8,000</span></div><div class="progress" style="margin-top:16px"><div class="bar" style="width:64%"></div></div></div>
+          </div>
+        </div>
+        <div class="grid stats">
+          <div class="card metric"><div class="small muted">DAILY DD LEFT</div><div class="value">$3,850</div><div class="small good" style="margin-top:8px">Healthy buffer</div></div>
+          <div class="card metric"><div class="small muted">MAX DD LEFT</div><div class="value">$7,400</div><div class="small muted" style="margin-top:8px">74% remaining</div></div>
+          <div class="card metric"><div class="small muted">TRADING DAYS</div><div class="value">7</div><div class="small muted" style="margin-top:8px">Challenge activity</div></div>
+          <div class="card metric"><div class="small muted">RISK STATUS</div><div class="value">Low</div><div class="small good" style="margin-top:8px">No rule pressure</div></div>
+        </div>
+      </div>
+
+      <div class="grid section">
+        <div class="card">
+          <div class="row"><div><div class="mid">Challenge health</div><div class="label" style="margin-top:4px">The trader sees what matters before placing the next trade.</div></div><span class="tag">Live-style preview</span></div>
+          <div class="rows">
+            <div><div class="row small"><span>Profit target</span><span>64%</span></div><div class="progress" style="margin-top:8px"><div class="bar" style="width:64%"></div></div></div>
+            <div><div class="row small"><span>Daily drawdown used</span><span>23%</span></div><div class="progress" style="margin-top:8px"><div style="width:23%;height:100%;background:var(--amber);border-radius:99px"></div></div></div>
+            <div><div class="row small"><span>Maximum drawdown used</span><span>26%</span></div><div class="progress" style="margin-top:8px"><div style="width:26%;height:100%;background:var(--accent2);border-radius:99px"></div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="mid">Smart warning layer</div>
+          <div class="notice" style="margin-top:14px"><b>No immediate rule risk</b><div class="small muted" style="margin-top:5px">If drawdown pressure increases, the dashboard can warn the trader before a rule violation.</div></div>
+          <button class="primary" id="openChallenge" style="margin-top:16px">Open challenge view</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="challenge" class="panel content">
+      <div class="grid formgrid">
+        <form id="challengeForm" class="card">
+          <div class="mid">Challenge setup</div><div class="label" style="margin:5px 0 18px">A trader enters the main rules once.</div>
+          <label class="field"><span class="label">Account size</span><input id="account" type="number" min="1000" step="1000" value="100000"></label>
+          <label class="field"><span class="label">Profit target %</span><input id="target" type="number" min="1" max="50" step=".1" value="8"></label>
+          <label class="field"><span class="label">Daily drawdown %</span><input id="daily" type="number" min="1" max="20" step=".1" value="5"></label>
+          <label class="field"><span class="label">Maximum drawdown %</span><input id="maxdd" type="number" min="1" max="30" step=".1" value="10"></label>
+          <button class="primary" type="submit">Update challenge</button>
+          <div id="note" class="disclaimer">Demo calculations only. No brokerage or prop firm connection.</div>
+        </form>
+        <div class="card">
+          <div class="row"><div><div class="mid">Rule snapshot</div><div class="label" style="margin-top:5px">Turns prop firm rules into visible limits.</div></div><span class="tag">Instant calculation</span></div>
+          <div class="grid rulegrid" style="margin-top:18px">
+            <div class="rule"><div class="small muted">PROFIT TARGET</div><div id="outTarget" class="mid" style="margin-top:9px">$8,000</div></div>
+            <div class="rule"><div class="small muted">DAILY LOSS LIMIT</div><div id="outDaily" class="mid" style="margin-top:9px">$5,000</div></div>
+            <div class="rule"><div class="small muted">MAXIMUM LOSS LIMIT</div><div id="outMax" class="mid" style="margin-top:9px">$10,000</div></div>
+            <div class="rule"><div class="small muted">ACCOUNT SIZE</div><div id="outAccount" class="mid" style="margin-top:9px">$100,000</div></div>
+          </div>
+          <div class="notice" style="margin-top:16px"><b>Why this matters</b><div class="small muted" style="margin-top:5px">The trader no longer needs to keep recalculating the basic challenge limits manually. The important rules stay visible while they monitor progress.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="compare" class="panel content">
+      <div class="row" style="align-items:flex-end"><div><div class="mid">Compare prop firms</div><div class="label" style="margin-top:5px">A useful decision layer that can naturally connect to affiliate offers.</div></div><div class="small muted">Illustrative firms and data</div></div>
+      <div class="grid firmgrid" style="margin-top:18px">
+        <article class="card firm"><div class="row"><div><div class="mid">Firm Alpha</div><div class="label">Two-Step Challenge</div></div><span class="tag">Popular</span></div><dl><div><dt>Profit target</dt><dd>8% / 5%</dd></div><div><dt>Daily DD</dt><dd>5%</dd></div><div><dt>Max DD</dt><dd>10%</dd></div><div><dt>Account example</dt><dd>$100K</dd></div></dl><button class="primary cta offer" data-firm="Firm Alpha">View offer</button></article>
+        <article class="card firm"><div class="row"><div><div class="mid">Firm Beta</div><div class="label">One-Step Challenge</div></div><span class="tag">Fast path</span></div><dl><div><dt>Profit target</dt><dd>10%</dd></div><div><dt>Daily DD</dt><dd>4%</dd></div><div><dt>Max DD</dt><dd>8%</dd></div><div><dt>Account example</dt><dd>$100K</dd></div></dl><button class="primary cta offer" data-firm="Firm Beta">View offer</button></article>
+        <article class="card firm"><div class="row"><div><div class="mid">Firm Gamma</div><div class="label">Evaluation Model</div></div><span class="tag">Balanced</span></div><dl><div><dt>Profit target</dt><dd>9% / 5%</dd></div><div><dt>Daily DD</dt><dd>5%</dd></div><div><dt>Max DD</dt><dd>10%</dd></div><div><dt>Account example</dt><dd>$50K</dd></div></dl><button class="primary cta offer" data-firm="Firm Gamma">View offer</button></article>
+      </div>
+      <div id="affiliateNote" class="notice" style="margin-top:16px">In the working build, these CTAs can use the client's actual affiliate links and selected prop firms.</div>
+    </section>
+  </main>
+  <div class="footer">Concept preview only · No live trading data · No financial advice</div>
+</div>
+<script>
+const tabs=[...document.querySelectorAll('.tab')], panels=[...document.querySelectorAll('.panel')];
+function show(id){tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===id));panels.forEach(p=>p.classList.toggle('active',p.id===id))}
+tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
+document.getElementById('openChallenge').addEventListener('click',()=>show('challenge'));
+const fmt=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
+document.getElementById('challengeForm').addEventListener('submit',e=>{
+e.preventDefault();
+const clamp=(v,min,max,f)=>Math.min(max,Math.max(min,Number(v)||f));
+const account=clamp(document.getElementById('account').value,1000,10000000,100000);
+const target=clamp(document.getElementById('target').value,1,50,8);
+const daily=clamp(document.getElementById('daily').value,1,20,5);
+const maxdd=clamp(document.getElementById('maxdd').value,1,30,10);
+document.getElementById('account').value=account;document.getElementById('target').value=target;document.getElementById('daily').value=daily;document.getElementById('maxdd').value=maxdd;
+document.getElementById('outAccount').textContent=fmt(account);
+document.getElementById('outTarget').textContent=fmt(account*target/100);
+document.getElementById('outDaily').textContent=fmt(account*daily/100);
+document.getElementById('outMax').textContent=fmt(account*maxdd/100);
+document.getElementById('note').textContent='Challenge rules updated for this concept preview.';
+});
+document.querySelectorAll('.offer').forEach(b=>b.addEventListener('click',()=>{document.getElementById('affiliateNote').textContent=b.dataset.firm+' selected. In the paid build, this button can open the client’s real affiliate or tracking link.'}));
+</script>
+</body></html>
